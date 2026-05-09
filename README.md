@@ -1,12 +1,14 @@
-# Marusgroup B2B Landing
+# MARUS GROUP — B2B Landing
 
-B2B-лендинг для Marusgroup на Next.js 14 (App Router) + TypeScript + Tailwind CSS.
+B2B-лендинг MARUS GROUP для застройщиков жилья бизнес-класса. Закрываем
+замечания по стеклу, фасадному остеклению и алюминиевому профилю на объектах
+перед приёмкой и передачей готовых помещений.
 
 ## Стек
 
 - Next.js 14 (App Router, RSC)
 - React 18, TypeScript 5 (strict)
-- Tailwind CSS 3
+- Tailwind CSS 3 (фирменная палитра, утилитарные классы из `globals.css`)
 - `lucide-react` для иконок
 
 ## Запуск
@@ -18,34 +20,46 @@ npm install
 npm run dev      # http://localhost:3000
 npm run lint
 npm run build
-npm run start    # запуск продакшен-сборки
+npm run start
 ```
 
-## Структура
+## Структура страницы (`app/page.tsx`)
 
-```
-app/
-  layout.tsx        # корневой layout, метаданные, OG, lang=ru
-  page.tsx          # главная страница (композиция секций)
-  globals.css       # tailwind + базовые слои/компоненты
-components/
-  Header.tsx        # шапка с навигацией и моб. меню
-  Hero.tsx          # hero c CTA и превью «дашборда»
-  TrustBar.tsx      # полоса с клиентами
-  Services.tsx      # 4 услуги
-  Process.tsx       # 4 шага работы
-  Stats.tsx         # KPI-блок
-  Industries.tsx    # индустрии
-  Faq.tsx           # FAQ (нативный <details>)
-  ContactCta.tsx    # форма заявки + CTA
-  Footer.tsx        # футер
-```
+1. `Header` — sticky, моб. меню, телефон, CTA «Запросить оценку»
+2. `Hero` — H1 «доводим стекло и алюминиевый профиль до состояния приёмки» + 4 маркера + 3 CTA + «карта объекта»
+3. `ForWhom` — для кого работаем (8 ролей застройщика)
+4. `Risks` — риски на финальной стадии объекта (8 шт.)
+5. `HowWeClose` — как закрываем риски (6 шт.)
+6. `WhatWeFix` — какие замечания закрываем (стекло / профиль / зоны объекта)
+7. `SurfaceProtection` — защита прилегающих поверхностей (10 зон)
+8. `Process` — регламент работ, 12 этапов
+9. `Handover` — как сдаём результат
+10. `Documents` — документы / ответственность / ограничения
+11. `WhatWeAlign` — что согласуем перед началом работ (вместо FAQ)
+12. `Experience` — реальные числа + 7 объектов застройщиков
+13. `ForEstimate` — что нужно для предварительной оценки
+14. `EstimateForm` — B2B-форма заявки (расширенный набор полей + загрузка фото)
+15. `Contacts` — контакты + юридические реквизиты (то, чего нет, помечено `уточняется`)
+16. `Footer`
+17. `MobileStickyCta` — sticky-панель быстрых действий на мобильном
 
-## Что нужно подменить под реального клиента
+## Палитра
 
-- Контактные данные (телефон, e-mail, реквизиты) в `Header`, `ContactCta`, `Footer`.
-- Список клиентов в `TrustBar` (заменить на реальные логотипы/названия).
-- KPI и кейсы в `Stats`.
-- Тексты услуг и индустрий — на актуальную линейку Marusgroup.
-- Пункт «политика обработки ПДн» в форме — заменить на реальную ссылку.
-- Подключить реальный backend для отправки формы (сейчас — имитация).
+- `--color-bg-primary` `#F7F8FA` (`bg-surface-subtle`)
+- `--color-bg-secondary` `#FFFFFF` (`bg-white` / `bg-surface`)
+- `--color-text-primary` `#15171A` (`text-ink`)
+- `--color-text-secondary` `#5D6673` (`text-ink-muted`)
+- `--color-border` `#DDE2E8` (`border-line`)
+- `--color-accent` `#1F4E5F` / `--color-accent-hover` `#173D4B` (`bg-accent`, `bg-accent-hover`)
+- `--color-metal` `#AAB3BC`, `--color-glass` `#DDEFF3`
+
+## Что нужно подменить под боевой запуск
+
+- Юридические данные (Юр. лицо / ИНН / ОГРН / КПП) — сейчас «уточняется».
+- Адрес и режим работы — «уточняется».
+- Подключить реальный backend для отправки формы (сейчас имитация
+  `setTimeout` в `EstimateForm.tsx`). Поля уже соответствуют B2B-брифу.
+- Подключить аналитику (Я.Метрика / GA / Plausible) и события на CTA / форме.
+- Реальные фото объектов — добавить в карточки `Experience.tsx`,
+  если будет согласие застройщиков.
+- Логотипы клиентов — не используем, пока нет файлов и письменного разрешения.

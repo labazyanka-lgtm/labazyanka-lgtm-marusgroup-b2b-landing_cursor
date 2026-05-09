@@ -1,32 +1,37 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
-const SITE_URL = "https://marusgroup.example";
-const TITLE = "Marusgroup — B2B-решения для роста вашего бизнеса";
+const SITE_URL = "https://marusgroup.ru";
+const TITLE =
+  "MARUS GROUP — восстановление стекла и алюминиевого профиля для застройщиков";
 const DESCRIPTION =
-  "Marusgroup — комплексные B2B-решения: автоматизация процессов, интеграции и сопровождение. Помогаем компаниям расти быстрее за счёт прозрачных процессов и измеримых результатов.";
+  "Закрываем замечания по стеклу, фасадному остеклению и алюминиевому профилю на объектах застройщиков перед приёмкой, сдачей и передачей готовых помещений.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: TITLE,
-    template: "%s — Marusgroup",
+    template: "%s — MARUS GROUP",
   },
   description: DESCRIPTION,
-  applicationName: "Marusgroup",
+  applicationName: "MARUS GROUP",
   keywords: [
-    "Marusgroup",
-    "B2B",
-    "автоматизация бизнеса",
-    "интеграции",
-    "корпоративные решения",
-    "цифровизация",
+    "восстановление стекла для застройщиков",
+    "устранение дефектов стекла в новостройках",
+    "подготовка остекления к приёмке",
+    "полировка стекла на объектах застройщиков",
+    "удаление окалины со стекла после строительных работ",
+    "реставрация фасадного остекления",
+    "реставрация алюминиевого профиля",
+    "дефекты стекла перед передачей помещений",
+    "работы со стеклом на объектах бизнес-класса",
+    "устранение замечаний по стеклу перед сдачей объекта",
   ],
-  authors: [{ name: "Marusgroup" }],
+  authors: [{ name: "MARUS GROUP" }],
   openGraph: {
     type: "website",
     url: SITE_URL,
-    siteName: "Marusgroup",
+    siteName: "MARUS GROUP",
     title: TITLE,
     description: DESCRIPTION,
     locale: "ru_RU",
@@ -46,7 +51,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#1f43f5",
+  themeColor: "#1F4E5F",
   width: "device-width",
   initialScale: 1,
 };
@@ -58,10 +63,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ru">
-      <body className="min-h-screen antialiased">
+      <body className="min-h-screen antialiased pb-20 md:pb-0">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-md focus:bg-brand-600 focus:px-3 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-md focus:bg-accent focus:px-3 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
         >
           Перейти к основному контенту
         </a>

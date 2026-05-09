@@ -1,59 +1,76 @@
-import { ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  ShieldCheck,
+  ClipboardList,
+  CheckCircle2,
+  FileCheck2,
+  Camera,
+  CalendarDays,
+} from "lucide-react";
+
+const MARKERS = [
+  { icon: ShieldCheck, label: "Защита готовой отделки" },
+  { icon: ClipboardList, label: "Работа по регламенту" },
+  { icon: CheckCircle2, label: "Фиксация результата" },
+  { icon: FileCheck2, label: "Закрывающие документы" },
+];
 
 export function Hero() {
   return (
     <section className="relative overflow-hidden bg-hero-radial">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-grid-soft [background-size:48px_48px] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)] opacity-40"
+        className="pointer-events-none absolute inset-0 bg-grid-soft [background-size:48px_48px] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)] opacity-30"
       />
-      <div className="container relative pt-16 pb-20 sm:pt-20 sm:pb-24 lg:pt-28 lg:pb-32">
-        <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+      <div className="container relative pt-14 pb-20 sm:pt-20 sm:pb-24 lg:pt-28 lg:pb-32">
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-10 items-center">
           <div className="lg:col-span-7">
             <p className="eyebrow">
-              <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
-              B2B-платформа для устойчивого роста
+              <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
+              B2B-подрядчик для застройщиков жилья бизнес-класса
             </p>
-            <h1 className="mt-5 text-balance text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-tight">
-              Управляйте бизнесом{" "}
-              <span className="bg-gradient-to-r from-brand-600 to-brand-400 bg-clip-text text-transparent">
-                как единой системой
-              </span>
+            <h1 className="mt-5 text-balance text-[2rem] sm:text-5xl lg:text-[3.5rem] font-semibold leading-[1.05] tracking-tight">
+              Доводим стекло и алюминиевый профиль на объектах бизнес-класса до{" "}
+              <span className="text-accent">состояния приёмки</span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg text-ink-muted text-balance">
-              Marusgroup объединяет автоматизацию, интеграции и аналитику в один
-              управляемый контур: от первой заявки до отчётности для совета
-              директоров.
+            <p className="mt-6 max-w-xl text-lg text-ink-muted text-pretty">
+              Закрываем замечания по стеклу, фасадному остеклению и алюминиевому
+              профилю перед сдачей объекта — аккуратно, с защитой отделки и без
+              повторных переделок.
             </p>
 
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <a href="#contact" className="btn-primary">
-                Получить демо
+            <ul className="mt-8 grid grid-cols-2 gap-x-6 gap-y-3 max-w-lg">
+              {MARKERS.map((m) => (
+                <li
+                  key={m.label}
+                  className="flex items-center gap-2.5 text-sm text-ink"
+                >
+                  <span className="grid h-7 w-7 place-items-center rounded-lg bg-glass text-accent-700 ring-1 ring-inset ring-accent-200/70">
+                    <m.icon className="h-3.5 w-3.5" aria-hidden="true" />
+                  </span>
+                  <span className="font-medium">{m.label}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-9 flex flex-wrap items-center gap-3">
+              <a href="#estimate" className="btn-primary">
+                Запросить оценку по объекту
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </a>
-              <a href="#services" className="btn-secondary">
-                Что мы делаем
+              <a href="#estimate" className="btn-secondary">
+                <Camera className="h-4 w-4 text-accent" aria-hidden="true" />
+                Отправить фото дефектов
+              </a>
+              <a href="#estimate" className="btn-ghost">
+                <CalendarDays className="h-4 w-4 text-accent" aria-hidden="true" />
+                Назначить выезд
               </a>
             </div>
-
-            <ul className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-ink-muted">
-              <li className="inline-flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-brand-600" aria-hidden="true" />
-                ФЗ-152, ISO 27001
-              </li>
-              <li className="inline-flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-brand-600" aria-hidden="true" />
-                SLA 99.95%
-              </li>
-              <li className="inline-flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-brand-600" aria-hidden="true" />
-                Внедрение от 4 недель
-              </li>
-            </ul>
           </div>
 
           <div className="lg:col-span-5">
-            <HeroPreview />
+            <ObjectCard />
           </div>
         </div>
       </div>
@@ -61,111 +78,86 @@ export function Hero() {
   );
 }
 
-function HeroPreview() {
+function ObjectCard() {
   return (
     <div className="relative">
-      <div className="absolute -inset-6 -z-10 rounded-3xl bg-gradient-to-tr from-brand-500/15 to-transparent blur-2xl" />
+      <div
+        aria-hidden="true"
+        className="absolute -inset-6 -z-10 rounded-[28px] bg-gradient-to-br from-glass via-white to-transparent blur-2xl opacity-80"
+      />
       <div className="card overflow-hidden">
-        <div className="flex items-center gap-1.5 border-b border-slate-100 px-4 py-3">
-          <span className="h-2.5 w-2.5 rounded-full bg-rose-300" />
-          <span className="h-2.5 w-2.5 rounded-full bg-amber-300" />
-          <span className="h-2.5 w-2.5 rounded-full bg-emerald-300" />
-          <span className="ml-3 text-xs font-medium text-ink-soft">
-            marusgroup • dashboard
-          </span>
-        </div>
-        <div className="p-5">
-          <div className="flex items-baseline justify-between">
-            <div>
-              <p className="text-xs font-medium uppercase tracking-wider text-ink-soft">
-                Выручка, MTD
-              </p>
-              <p className="mt-1 text-3xl font-semibold tracking-tight text-ink">
-                ₽ 24,7 млн
-              </p>
-            </div>
-            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 ring-1 ring-inset ring-emerald-100">
-              ▲ 12,4%
+        <div className="flex items-center justify-between border-b border-line/70 px-5 py-3">
+          <div className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
+            <span className="text-xs font-semibold uppercase tracking-[0.16em] text-ink-soft">
+              Карта объекта
             </span>
           </div>
+          <span className="pill text-[11px] !text-accent-700 !ring-accent-200/70 !bg-glass">
+            Готов к приёмке
+          </span>
+        </div>
 
-          <div className="mt-5">
-            <Sparkline />
-          </div>
-
-          <dl className="mt-5 grid grid-cols-3 gap-3 text-center">
-            {[
-              { k: "Сделки", v: "1 284" },
-              { k: "Конверсия", v: "31%" },
-              { k: "NPS", v: "72" },
-            ].map((m) => (
-              <div
-                key={m.k}
-                className="rounded-xl bg-slate-50 px-3 py-3 ring-1 ring-inset ring-slate-100"
-              >
-                <dt className="text-[11px] font-medium uppercase tracking-wider text-ink-soft">
-                  {m.k}
-                </dt>
-                <dd className="mt-1 text-lg font-semibold text-ink">{m.v}</dd>
-              </div>
-            ))}
+        <div className="p-5 sm:p-6">
+          <dl className="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <dt className="text-[11px] font-medium uppercase tracking-wider text-ink-soft">
+                Объект
+              </dt>
+              <dd className="mt-1 font-semibold text-ink">ЖК бизнес-класса</dd>
+            </div>
+            <div>
+              <dt className="text-[11px] font-medium uppercase tracking-wider text-ink-soft">
+                Стадия
+              </dt>
+              <dd className="mt-1 font-semibold text-ink">
+                Передача помещений
+              </dd>
+            </div>
+            <div>
+              <dt className="text-[11px] font-medium uppercase tracking-wider text-ink-soft">
+                Зона работ
+              </dt>
+              <dd className="mt-1 font-semibold text-ink">
+                Готовые помещения, МОПы, фасад
+              </dd>
+            </div>
+            <div>
+              <dt className="text-[11px] font-medium uppercase tracking-wider text-ink-soft">
+                Тип замечаний
+              </dt>
+              <dd className="mt-1 font-semibold text-ink">
+                Стекло, алюминиевый профиль
+              </dd>
+            </div>
           </dl>
 
-          <ul className="mt-5 space-y-2.5">
+          <ul className="mt-6 space-y-2.5">
             {[
-              { t: "Интеграция с 1С: УТ", s: "синхронизировано" },
-              { t: "Поток заявок из CRM", s: "в работе" },
-              { t: "Отчёт для CFO", s: "готов к выгрузке" },
+              "Защита готовой отделки",
+              "Регламент работ — 12 этапов",
+              "Контроль результата",
+              "Закрывающие документы",
             ].map((row) => (
               <li
-                key={row.t}
-                className="flex items-center justify-between rounded-lg bg-white px-3 py-2 ring-1 ring-inset ring-slate-100"
+                key={row}
+                className="flex items-center gap-3 rounded-xl bg-surface-subtle px-3.5 py-2.5 ring-1 ring-inset ring-line"
               >
-                <span className="text-sm text-ink">{row.t}</span>
-                <span className="text-xs text-ink-soft">{row.s}</span>
+                <CheckCircle2
+                  className="h-4 w-4 shrink-0 text-accent"
+                  aria-hidden="true"
+                />
+                <span className="text-sm font-medium text-ink">{row}</span>
               </li>
             ))}
           </ul>
+
+          <div className="mt-6 flex items-center justify-between border-t border-line pt-4 text-xs text-ink-soft">
+            <span>На рынке с 2008 года</span>
+            <span>Москва и МО</span>
+          </div>
         </div>
       </div>
     </div>
-  );
-}
-
-function Sparkline() {
-  const points = [12, 18, 14, 22, 19, 28, 26, 34, 31, 40, 38, 46];
-  const w = 320;
-  const h = 80;
-  const max = Math.max(...points);
-  const min = Math.min(...points);
-  const stepX = w / (points.length - 1);
-  const norm = (v: number) => h - ((v - min) / (max - min)) * (h - 8) - 4;
-  const d = points
-    .map((v, i) => `${i === 0 ? "M" : "L"} ${i * stepX},${norm(v)}`)
-    .join(" ");
-  const area = `${d} L ${w},${h} L 0,${h} Z`;
-  return (
-    <svg
-      viewBox={`0 0 ${w} ${h}`}
-      className="w-full"
-      role="img"
-      aria-label="Динамика выручки растёт"
-    >
-      <defs>
-        <linearGradient id="spark" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor="#3563ff" stopOpacity="0.25" />
-          <stop offset="100%" stopColor="#3563ff" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      <path d={area} fill="url(#spark)" />
-      <path
-        d={d}
-        fill="none"
-        stroke="#1f43f5"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
   );
 }

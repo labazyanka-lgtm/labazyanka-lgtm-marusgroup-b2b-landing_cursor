@@ -14,12 +14,11 @@
   }
 
   body {
-    @apply bg-white text-ink;
-    font-feature-settings: "ss01", "cv11";
+    @apply bg-surface-subtle text-ink;
   }
 
   ::selection {
-    @apply bg-brand-500/20 text-ink;
+    @apply bg-accent/15 text-ink;
   }
 
   h1, h2, h3, h4 {
@@ -29,23 +28,27 @@
 
 @layer components {
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed;
   }
 
   .btn-primary {
-    @apply btn bg-brand-600 text-white shadow-cta hover:bg-brand-700 active:bg-brand-800;
+    @apply btn bg-accent text-white shadow-cta hover:bg-accent-hover active:bg-accent-800;
   }
 
   .btn-secondary {
-    @apply btn bg-white text-ink ring-1 ring-slate-200 hover:bg-slate-50 active:bg-slate-100;
+    @apply btn bg-white text-ink ring-1 ring-line hover:bg-surface-subtle active:bg-line-soft;
   }
 
   .btn-ghost {
-    @apply btn text-ink hover:bg-slate-100;
+    @apply btn text-ink hover:bg-surface-subtle;
+  }
+
+  .btn-on-dark {
+    @apply btn bg-white text-accent-700 hover:bg-glass active:bg-accent-100;
   }
 
   .eyebrow {
-    @apply inline-flex items-center gap-2 rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-brand-700 ring-1 ring-inset ring-brand-100;
+    @apply inline-flex items-center gap-2 rounded-full bg-glass px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-accent-700 ring-1 ring-inset ring-accent-200/70;
   }
 
   .section {
@@ -53,7 +56,7 @@
   }
 
   .section-title {
-    @apply text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-ink;
+    @apply text-3xl sm:text-4xl lg:text-[2.75rem] font-semibold leading-[1.1] tracking-tight text-ink;
   }
 
   .section-subtitle {
@@ -61,20 +64,43 @@
   }
 
   .card {
-    @apply rounded-2xl bg-white ring-1 ring-slate-200/80 shadow-card;
+    @apply rounded-2xl bg-white ring-1 ring-line/80 shadow-card;
+  }
+
+  .card-flat {
+    @apply rounded-2xl bg-white ring-1 ring-line;
   }
 
   .input {
-    @apply w-full rounded-xl border-0 bg-white px-4 py-3 text-sm text-ink ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-brand-500 outline-none transition;
+    @apply w-full rounded-xl border-0 bg-white px-4 py-3 text-sm text-ink ring-1 ring-inset ring-line placeholder:text-ink-soft focus:ring-2 focus:ring-accent outline-none transition;
   }
 
   .label {
     @apply block text-sm font-medium text-ink mb-1.5;
+  }
+
+  .pill {
+    @apply inline-flex items-center gap-1.5 rounded-full bg-surface-subtle px-2.5 py-1 text-xs font-medium text-ink-muted ring-1 ring-inset ring-line;
+  }
+
+  .step-num {
+    @apply text-sm font-semibold text-accent;
   }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  /* hide scrollbar where used */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
