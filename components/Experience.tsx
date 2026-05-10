@@ -1,10 +1,27 @@
+type Project = {
+  name: string;
+  client: string;
+  period: string;
+  scope: string;
+  works: string[];
+  /**
+   * Опциональное изображение объекта.
+   *
+   * TODO[real-data]: положить файл в `public/projects/<slug>.jpg|.webp` и
+   * указать путь, начинающийся с `/projects/...`. До этого карточка остаётся
+   * без иллюстрации (как и сейчас) — это допустимо, ничего не ломает.
+   * Использовать чужие фото только с письменного согласия застройщика.
+   */
+  image?: { src: string; alt: string };
+};
+
 const STATS = [
   { v: "с 2008", k: "на рынке" },
   { v: "50+", k: "объектов ведущих застройщиков Москвы" },
   { v: "1500+ м²", k: "отшлифованного и отполированного стекла" },
 ];
 
-const PROJECTS = [
+const PROJECTS: Project[] = [
   {
     name: "ЖК Eleven",
     client: "АО «Хлебозавод»",
@@ -133,6 +150,15 @@ export function Experience() {
           <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {PROJECTS.map((p) => (
               <li key={p.name} className="card p-6 flex flex-col">
+                {p.image ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={p.image.src}
+                    alt={p.image.alt}
+                    loading="lazy"
+                    className="mb-5 -mx-6 -mt-6 aspect-[16/10] w-[calc(100%+3rem)] object-cover"
+                  />
+                ) : null}
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <h4 className="text-lg font-semibold tracking-tight text-ink">

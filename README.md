@@ -17,6 +17,7 @@ B2B-лендинг MARUS GROUP для застройщиков жилья биз
 
 ```bash
 npm install
+cp .env.example .env.local   # задать переменные окружения (см. ниже)
 npm run dev      # http://localhost:3000
 npm run lint
 npm run build
@@ -38,10 +39,19 @@ npm run start
 11. `WhatWeAlign` — что согласуем перед началом работ (вместо FAQ)
 12. `Experience` — реальные числа + 7 объектов застройщиков
 13. `ForEstimate` — что нужно для предварительной оценки
-14. `EstimateForm` — B2B-форма заявки (расширенный набор полей + загрузка фото)
-15. `Contacts` — контакты + юридические реквизиты (то, чего нет, помечено `уточняется`)
+14. `EstimateForm` — B2B-форма заявки (расширенный набор полей + загрузка фото),
+    отправляется на `POST /api/estimate`
+15. `Contacts` — контакты + юридические реквизиты (значения из `lib/site-config.ts`)
 16. `Footer`
 17. `MobileStickyCta` — sticky-панель быстрых действий на мобильном
+
+Дополнительно:
+
+- `/privacy` — политика обработки персональных данных (заглушка с пометками
+  `TODO[real-data]`).
+- `/sitemap.xml`, `/robots.txt` — автоматически генерируются Next.js
+  (`app/sitemap.ts`, `app/robots.ts`).
+- `/og-image.svg` — изображение для соцсетей (Open Graph / Twitter card).
 
 ## Палитра
 
@@ -53,13 +63,81 @@ npm run start
 - `--color-accent` `#1F4E5F` / `--color-accent-hover` `#173D4B` (`bg-accent`, `bg-accent-hover`)
 - `--color-metal` `#AAB3BC`, `--color-glass` `#DDEFF3`
 
+## Конфиг и плейсхолдеры
+
+Контакты, юр. реквизиты, ID счётчиков и каналы доставки заявок собраны в
+`lib/site-config.ts`. Все значения, которые ещё не получены от заказчика,
+помечены константой `PLACEHOLDER` (отображается в UI как `уточняется`).
+
+Грепнуть остатки можно так:
+
+```bash
+rg "PLACEHOLDER|TODO\\[real-data\\]" lib components app
+```
+
+## Переменные окружения
+
+Полный список — в `.env.example`. Краткий перечень:
+
+| Переменная                          | Назначение                                         |
+| ----------------------------------- | -------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`              | базовый URL для metadata / sitemap / robots        |
+| `NEXT_PUBLIC_YANDEX_METRIKA_ID`     | ID счётчика Яндекс.Метрики                         |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID`     | Measurement ID GA4 (`G-XXXXXXX`)                   |
+| `ESTIMATE_TELEGRAM_BOT_TOKEN`       | токен Telegram-бота для уведомлений                |
+| `ESTIMATE_TELEGRAM_CHAT_ID`         | chat_id получателя в Telegram                      |
+| `ESTIMATE_WEBHOOK_URL`              | произвольный JSON-webhook (Make / n8n / CRM)       |
+| `RESEND_API_KEY` + `ESTIMATE_NOTIFY_EMAIL` | email-рассылка через Resend HTTP API        |
+| `ESTIMATE_NOTIFY_FROM`              | (опц.) адрес отправителя для Resend                |
+
+Если ни один канал доставки не сконфигурирован, заявка пишется в server-лог
+(`console.warn`) — ничего не теряется, но лучше настроить хотя бы один канал.
+
+## Аналитика
+
+`components/Analytics.tsx` подключает Яндекс.Метрику и GA4 через `next/script`,
+но **только если** заданы соответствующие env-переменные. Поэтому в dev-режиме
+без этих ключей счётчики просто не рендерятся.
+
+`components/AnalyticsClicks.tsx` ловит клики делегированно: на любой ссылке /
+кнопке с `data-analytics="<location>"` отправляется событие `cta_click`,
+`phone_click` или `email_click` (по `href`). Форма «Запросить оценку» сама
+эмитит `estimate_submit` / `estimate_success` / `estimate_error`.
+
+Helper для своих событий:
+
+```ts
+import { trackEvent } from "@/lib/analytics";
+trackEvent("cta_click", { location: "hero" });
+```
+
 ## Что нужно подменить под боевой запуск
 
-- Юридические данные (Юр. лицо / ИНН / ОГРН / КПП) — сейчас «уточняется».
-- Адрес и режим работы — «уточняется».
-- Подключить реальный backend для отправки формы (сейчас имитация
-  `setTimeout` в `EstimateForm.tsx`). Поля уже соответствуют B2B-брифу.
-- Подключить аналитику (Я.Метрика / GA / Plausible) и события на CTA / форме.
-- Реальные фото объектов — добавить в карточки `Experience.tsx`,
-  если будет согласие застройщиков.
+Все пункты сейчас явно помечены `PLACEHOLDER` / `TODO[real-data]`:
+
+- `lib/site-config.ts` → `legal.legalName / inn / ogrn / kpp` — реальные реквизиты.
+- `lib/site-config.ts` → `contacts.address / workingHours` — адрес и режим работы.
+- `.env.local` — задать минимум один канал доставки заявок и счётчики аналитики.
+- `app/privacy/page.tsx` — финальная редакция политики, пройтись юристом.
+- `components/Experience.tsx` + `public/projects/` — реальные фото объектов
+  (только с письменного согласия застройщиков; см. `public/projects/README.md`).
 - Логотипы клиентов — не используем, пока нет файлов и письменного разрешения.
+
+## API
+
+### `POST /api/estimate`
+
+Принимает `multipart/form-data` со всеми полями формы (`name`, `company`,
+`phone`, `object` — обязательные; остальные — опциональные) и до 10 файлов
+в поле `photos`, общий размер до 25 МБ.
+
+Ответы:
+
+- `200 { ok: true }` — заявка успешно доставлена хотя бы одним каналом
+  (или записана в логи, если каналы не сконфигурированы).
+- `400 { ok: false, error }` — невалидные данные / нет обязательных полей.
+- `413 { ok: false, error }` — превышены лимиты по числу файлов / размеру.
+- `502 { ok: false, error }` — все настроенные каналы доставки упали.
+
+Содержит honeypot-поле `website`: бот его заполняет, человек — нет;
+заполненное поле возвращает `200`, но никуда не отправляет.

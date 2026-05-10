@@ -1,4 +1,5 @@
 import { Phone, Camera, CalendarDays } from "lucide-react";
+import { contacts } from "@/lib/site-config";
 
 export function MobileStickyCta() {
   return (
@@ -8,7 +9,8 @@ export function MobileStickyCta() {
     >
       <div className="grid grid-cols-3 divide-x divide-line">
         <a
-          href="tel:+79175162404"
+          href={`tel:${contacts.phoneTel}`}
+          data-analytics="mobile_sticky.phone"
           className="flex flex-col items-center justify-center gap-1 py-3 text-[11px] font-medium text-ink hover:bg-surface-subtle"
         >
           <Phone className="h-5 w-5 text-accent" aria-hidden="true" />
@@ -16,6 +18,7 @@ export function MobileStickyCta() {
         </a>
         <a
           href="#estimate"
+          data-analytics="mobile_sticky.estimate_photo"
           className="flex flex-col items-center justify-center gap-1 py-3 text-[11px] font-medium text-ink hover:bg-surface-subtle"
         >
           <Camera className="h-5 w-5 text-accent" aria-hidden="true" />
@@ -23,6 +26,7 @@ export function MobileStickyCta() {
         </a>
         <a
           href="#estimate"
+          data-analytics="mobile_sticky.estimate_visit"
           className="flex flex-col items-center justify-center gap-1 py-3 text-[11px] font-medium text-ink hover:bg-surface-subtle"
         >
           <CalendarDays className="h-5 w-5 text-accent" aria-hidden="true" />
