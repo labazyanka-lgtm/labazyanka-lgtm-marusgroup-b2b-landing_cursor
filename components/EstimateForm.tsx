@@ -1,13 +1,16 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import {
   ArrowRight,
   CheckCircle2,
   Camera,
   CalendarDays,
   FileText,
+  AlertCircle,
 } from "lucide-react";
+import { siteConfig } from "@/lib/site-config";
+import { trackEvent } from "@/lib/analytics";
 
 const STAGES = [
   "Передача помещений",
@@ -34,17 +37,70 @@ const REQUEST_TYPES = [
 
 const CONTACT_PREFS = ["Телефон", "Email", "Telegram", "WhatsApp"];
 
+const { contacts, estimateApi } = siteConfig;
+
 export function EstimateForm() {
   const [submitted, setSubmitted] = useState(false);
   const [pending, setPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
-  function onSubmit(e: FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (pending) return;
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    const filesField = data.getAll("photos").filter((v): v is File => v instanceof File);
+    const totalBytes = filesField.reduce((s, f) => s + f.size, 0);
+    if (totalBytes > estimateApi.maxTotalBytes) {
+      setError(
+        `Суммарный размер файлов превышает ${
+          estimateApi.maxTotalBytes / 1024 / 1024
+        } МБ. Удалите часть фото и попробуйте снова.`,
+      );
+      return;
+    }
+
+    setError(null);
     setPending(true);
-    setTimeout(() => {
-      setPending(false);
+    trackEvent("estimate_submit", {
+      company: String(data.get("company") || ""),
+      object: String(data.get("object") || ""),
+      files: filesField.length,
+    });
+
+    try {
+      const res = await fetch(estimateApi.endpoint, {
+        method: "POST",
+        body: data,
+      });
+      const json = (await res.json().catch(() => null)) as
+        | { ok: boolean; error?: string; delivered?: string[] }
+        | null;
+      if (!res.ok || !json?.ok) {
+        const msg =
+          json?.error ||
+          "Не удалось отправить заявку. Попробуйте позже или позвоните нам.";
+        setError(msg);
+        trackEvent("estimate_error", { reason: msg });
+        return;
+      }
+      trackEvent("estimate_success", {
+        delivered: (json.delivered || []).join(",") || "log",
+      });
       setSubmitted(true);
-    }, 600);
+      form.reset();
+    } catch (err) {
+      const msg =
+        err instanceof Error
+          ? err.message
+          : "Сетевая ошибка. Попробуйте позже или позвоните нам.";
+      setError(msg);
+      trackEvent("estimate_error", { reason: msg });
+    } finally {
+      setPending(false);
+    }
   }
 
   return (
@@ -93,18 +149,20 @@ export function EstimateForm() {
               <div className="mt-10 border-t border-white/15 pt-6 text-sm text-white/80">
                 <p>
                   <a
-                    href="tel:+79175162404"
+                    href={contacts.phoneHref}
+                    data-analytics="estimate_aside_phone"
                     className="font-semibold text-white hover:underline"
                   >
-                    +7 (917) 516-24-04
+                    {contacts.phone}
                   </a>
                 </p>
                 <p className="mt-1">
                   <a
-                    href="mailto:info@marusgroup.ru"
+                    href={contacts.emailHref}
+                    data-analytics="estimate_aside_email"
                     className="font-semibold text-white hover:underline"
                   >
-                    info@marusgroup.ru
+                    {contacts.email}
                   </a>
                 </p>
               </div>
@@ -128,10 +186,27 @@ export function EstimateForm() {
                 </div>
               ) : (
                 <form
+                  ref={formRef}
                   className="grid gap-4 sm:grid-cols-2"
                   onSubmit={onSubmit}
                   noValidate
                 >
+                  {/* Honeypot для ботов: реальные пользователи это поле не видят. */}
+                  <div
+                    aria-hidden="true"
+                    className="hidden"
+                    style={{ position: "absolute", left: "-10000px" }}
+                  >
+                    <label htmlFor="website">Website</label>
+                    <input
+                      id="website"
+                      name="website"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
+                    />
+                  </div>
+
                   <div>
                     <label htmlFor="name" className="label">
                       Имя
@@ -339,6 +414,8 @@ export function EstimateForm() {
                     />
                     <p className="mt-1.5 text-xs text-ink-soft">
                       Можно прикрепить несколько фото дефектов или зоны работ.
+                      До {estimateApi.maxFiles} файлов, суммарно до{" "}
+                      {Math.round(estimateApi.maxTotalBytes / 1024 / 1024)} МБ.
                     </p>
                   </div>
 
@@ -355,6 +432,19 @@ export function EstimateForm() {
                     />
                   </div>
 
+                  {error && (
+                    <div
+                      role="alert"
+                      className="sm:col-span-2 flex items-start gap-2.5 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700 ring-1 ring-inset ring-red-200"
+                    >
+                      <AlertCircle
+                        className="mt-0.5 h-4 w-4 shrink-0"
+                        aria-hidden="true"
+                      />
+                      <span>{error}</span>
+                    </div>
+                  )}
+
                   <div className="sm:col-span-2 flex flex-wrap items-center justify-between gap-4 pt-1">
                     <p className="text-xs text-ink-soft max-w-md">
                       Нажимая кнопку, вы соглашаетесь с политикой обработки
@@ -364,6 +454,7 @@ export function EstimateForm() {
                       type="submit"
                       className="btn-primary"
                       disabled={pending}
+                      data-analytics="estimate_submit_button"
                     >
                       {pending ? "Отправка…" : "Запросить оценку по объекту"}
                       {!pending && (

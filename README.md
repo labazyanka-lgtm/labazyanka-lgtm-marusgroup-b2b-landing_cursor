@@ -53,13 +53,57 @@ npm run start
 - `--color-accent` `#1F4E5F` / `--color-accent-hover` `#173D4B` (`bg-accent`, `bg-accent-hover`)
 - `--color-metal` `#AAB3BC`, `--color-glass` `#DDEFF3`
 
-## Что нужно подменить под боевой запуск
+## Boundary с заказчиком
 
-- Юридические данные (Юр. лицо / ИНН / ОГРН / КПП) — сейчас «уточняется».
-- Адрес и режим работы — «уточняется».
-- Подключить реальный backend для отправки формы (сейчас имитация
-  `setTimeout` в `EstimateForm.tsx`). Поля уже соответствуют B2B-брифу.
-- Подключить аналитику (Я.Метрика / GA / Plausible) и события на CTA / форме.
+Все «реальные» данные собраны в одном файле — `lib/site-config.ts`. Там же
+помечены поля, по которым ещё нет данных от заказчика, константой
+`PLACEHOLDER` (рендерится как «уточняется») и комментарием `TODO[real-data]:`.
+
+Грепнуть остатки перед боевым запуском:
+
+```bash
+rg "PLACEHOLDER|TODO\[real-data\]" lib components app
+```
+
+### Env-переменные (`.env.local`)
+
+См. `.env.example`. Все переменные опциональные:
+
+| Переменная | Зачем |
+| --- | --- |
+| `NEXT_PUBLIC_SITE_URL` | Базовый URL продакшена для Open Graph / `metadataBase` |
+| `NEXT_PUBLIC_YANDEX_METRIKA_ID` | ID счётчика Яндекс.Метрики |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | GA4 Measurement ID (`G-XXXXXXX`) |
+| `ESTIMATE_TELEGRAM_BOT_TOKEN` + `ESTIMATE_TELEGRAM_CHAT_ID` | Доставка заявок в Telegram |
+| `ESTIMATE_WEBHOOK_URL` | Универсальный JSON-webhook (Make / n8n / CRM) |
+| `RESEND_API_KEY` + `ESTIMATE_NOTIFY_EMAIL` + `ESTIMATE_NOTIFY_FROM` | Email через Resend |
+
+Если ни один канал доставки не сконфигурирован, заявка пишется в server-лог,
+чтобы не теряться.
+
+### Что ещё нужно от заказчика
+
+- Юридические реквизиты (Юр. лицо / ИНН / ОГРН / КПП) — `lib/site-config.ts`,
+  блок `legal`.
+- Адрес офиса и режим работы — `lib/site-config.ts`, блок `contacts`.
 - Реальные фото объектов — добавить в карточки `Experience.tsx`,
   если будет согласие застройщиков.
 - Логотипы клиентов — не используем, пока нет файлов и письменного разрешения.
+
+## API формы — `POST /api/estimate`
+
+- Принимает `multipart/form-data` (см. поля в `components/EstimateForm.tsx`).
+- Обязательные: `name`, `company`, `phone`, `object`.
+- До 10 файлов, суммарно до 25 МБ. Honeypot-поле `website` тихо отбрасывает ботов.
+- Все три канала доставки независимы — выставлен любой / любая комбинация.
+- Без новых npm-зависимостей.
+
+## Аналитика
+
+- `components/Analytics.tsx` подключает Я.Метрику и GA4 через `next/script`,
+  только если выставлены соответствующие env-переменные.
+- `components/AnalyticsClicks.tsx` — делегированный listener: любой
+  `data-analytics="<location>"` на ссылке/кнопке шлёт `cta_click` /
+  `phone_click` / `email_click`. Тип события подбирается по `href`.
+- `lib/analytics.ts` экспортирует `trackEvent(name, params)`. Форма дополнительно
+  эмитит `estimate_submit` / `estimate_success` / `estimate_error`.

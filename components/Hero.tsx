@@ -54,15 +54,27 @@ export function Hero() {
             </ul>
 
             <div className="mt-9 flex flex-wrap items-center gap-3">
-              <a href="#estimate" className="btn-primary">
+              <a
+                href="#estimate"
+                data-analytics="hero_cta_estimate"
+                className="btn-primary"
+              >
                 Запросить оценку по объекту
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </a>
-              <a href="#estimate" className="btn-secondary">
+              <a
+                href="#estimate"
+                data-analytics="hero_cta_photo"
+                className="btn-secondary"
+              >
                 <Camera className="h-4 w-4 text-accent" aria-hidden="true" />
                 Отправить фото дефектов
               </a>
-              <a href="#estimate" className="btn-ghost">
+              <a
+                href="#estimate"
+                data-analytics="hero_cta_visit"
+                className="btn-ghost"
+              >
                 <CalendarDays className="h-4 w-4 text-accent" aria-hidden="true" />
                 Назначить выезд
               </a>

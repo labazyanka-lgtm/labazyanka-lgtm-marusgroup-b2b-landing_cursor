@@ -1,4 +1,5 @@
 import { Logo } from "./Logo";
+import { siteConfig } from "@/lib/site-config";
 
 const COL_NAV = [
   { href: "#for-whom", label: "Для кого работаем" },
@@ -10,6 +11,14 @@ const COL_NAV = [
 
 export function Footer() {
   const year = new Date().getFullYear();
+  const { contacts, legal, foundedYear, region } = siteConfig;
+
+  const legalRows: Array<[string, string]> = [
+    ["Юр. лицо", legal.legalName],
+    ["ИНН", legal.inn],
+    ["ОГРН", legal.ogrn],
+  ];
+
   return (
     <footer className="border-t border-line bg-white">
       <div className="container py-14">
@@ -19,23 +28,25 @@ export function Footer() {
             <p className="mt-4 max-w-md text-sm text-ink-muted">
               B2B-подрядчик для застройщиков. Закрываем замечания по стеклу,
               фасадному остеклению и алюминиевому профилю на объектах перед
-              приёмкой и передачей готовых помещений. На рынке с 2008 года,
-              Москва и Московский регион.
+              приёмкой и передачей готовых помещений. На рынке с {foundedYear}{" "}
+              года, {region}.
             </p>
             <p className="mt-6 text-sm">
               <a
-                href="tel:+79175162404"
+                href={contacts.phoneHref}
+                data-analytics="footer_phone"
                 className="font-semibold text-ink hover:text-accent"
               >
-                +7 (917) 516-24-04
+                {contacts.phone}
               </a>
             </p>
             <p className="text-sm">
               <a
-                href="mailto:info@marusgroup.ru"
+                href={contacts.emailHref}
+                data-analytics="footer_email"
                 className="font-semibold text-ink hover:text-accent"
               >
-                info@marusgroup.ru
+                {contacts.email}
               </a>
             </p>
           </div>
@@ -63,11 +74,7 @@ export function Footer() {
               Реквизиты
             </p>
             <dl className="mt-4 space-y-2 text-sm">
-              {[
-                ["Юр. лицо", "уточняется"],
-                ["ИНН", "уточняется"],
-                ["ОГРН", "уточняется"],
-              ].map(([k, v]) => (
+              {legalRows.map(([k, v]) => (
                 <div key={k} className="flex justify-between gap-3">
                   <dt className="text-ink-soft">{k}</dt>
                   <dd className="text-ink-muted">{v}</dd>
@@ -79,10 +86,10 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col-reverse items-start justify-between gap-4 border-t border-line pt-6 sm:flex-row sm:items-center">
           <p className="text-xs text-ink-soft">
-            © {year} MARUS GROUP. Все права защищены.
+            © {year} {siteConfig.brand}. Все права защищены.
           </p>
           <p className="text-xs text-ink-soft">
-            Москва и Московский регион · работаем с 2008 года
+            {region} · работаем с {foundedYear} года
           </p>
         </div>
       </div>
