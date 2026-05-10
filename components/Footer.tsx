@@ -4,6 +4,7 @@ const COL_NAV = [
   { href: "#for-whom", label: "Для кого работаем" },
   { href: "#regulation", label: "Регламент работ" },
   { href: "#experience", label: "Опыт и объекты" },
+  { href: "#standards", label: "ГОСТы и приёмка" },
   { href: "#estimate", label: "Запросить оценку" },
   { href: "#contacts", label: "Контакты" },
 ];

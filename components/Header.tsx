@@ -8,6 +8,7 @@ const NAV = [
   { href: "#for-whom", label: "Для кого" },
   { href: "#regulation", label: "Регламент" },
   { href: "#experience", label: "Опыт" },
+  { href: "#standards", label: "ГОСТы" },
   { href: "#contacts", label: "Контакты" },
 ];
 

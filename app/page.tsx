@@ -10,6 +10,7 @@ import { Handover } from "@/components/Handover";
 import { Documents } from "@/components/Documents";
 import { WhatWeAlign } from "@/components/WhatWeAlign";
 import { Experience } from "@/components/Experience";
+import { Standards } from "@/components/Standards";
 import { ForEstimate } from "@/components/ForEstimate";
 import { EstimateForm } from "@/components/EstimateForm";
 import { Contacts } from "@/components/Contacts";
@@ -32,6 +33,7 @@ export default function HomePage() {
         <Documents />
         <WhatWeAlign />
         <Experience />
+        <Standards />
         <ForEstimate />
         <EstimateForm />
         <Contacts />

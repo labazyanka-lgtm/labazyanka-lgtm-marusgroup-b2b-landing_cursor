@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Jost, Montserrat } from "next/font/google";
 import "./globals.css";
 
 const SITE_URL = "https://marusgroup.ru";
@@ -6,6 +7,20 @@ const TITLE =
   "MARUS GROUP — восстановление стекла и алюминиевого профиля для застройщиков";
 const DESCRIPTION =
   "Закрываем замечания по стеклу, фасадному остеклению и алюминиевому профилю на объектах застройщиков перед приёмкой, сдачей и передачей готовых помещений.";
+
+const montserrat = Montserrat({
+  subsets: ["cyrillic", "latin"],
+  variable: "--font-montserrat",
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+});
+
+const jost = Jost({
+  subsets: ["cyrillic", "latin"],
+  variable: "--font-jost",
+  weight: ["300", "400", "600", "700"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -63,7 +78,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ru">
-      <body className="min-h-screen antialiased pb-20 md:pb-0">
+      <body
+        className={`${montserrat.variable} ${jost.variable} min-h-screen antialiased pb-20 md:pb-0`}
+      >
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-md focus:bg-accent focus:px-3 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
