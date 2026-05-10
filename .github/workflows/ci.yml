@@ -31,3 +31,7 @@ jobs:
       - run: npm run test:e2e
         env:
           CI: true
+
+      - run: npm run test:e2e:estimate
+        env:
+          CI: true

@@ -9,6 +9,7 @@ test.describe("landing smoke", () => {
     await expect(
       page.getByRole("heading", { name: /запросить оценку по объекту/i }),
     ).toBeVisible();
+    await expect(page.locator("#experience img").first()).toBeVisible();
   });
 
   test("estimate API returns 503 when server has no mail/webhook config", async ({
