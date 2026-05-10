@@ -1,14 +1,16 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { Analytics } from "@/components/Analytics";
+import { AnalyticsClicks } from "@/components/AnalyticsClicks";
+import { siteConfig } from "@/lib/site-config";
 
-const SITE_URL = "https://marusgroup.ru";
 const TITLE =
   "MARUS GROUP — восстановление стекла и алюминиевого профиля для застройщиков";
 const DESCRIPTION =
   "Закрываем замечания по стеклу, фасадному остеклению и алюминиевому профилю на объектах застройщиков перед приёмкой, сдачей и передачей готовых помещений.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL(siteConfig.url),
   title: {
     default: TITLE,
     template: "%s — MARUS GROUP",
@@ -30,7 +32,7 @@ export const metadata: Metadata = {
   authors: [{ name: "MARUS GROUP" }],
   openGraph: {
     type: "website",
-    url: SITE_URL,
+    url: siteConfig.url,
     siteName: "MARUS GROUP",
     title: TITLE,
     description: DESCRIPTION,
@@ -70,6 +72,8 @@ export default function RootLayout({
         >
           Перейти к основному контенту
         </a>
+        <Analytics />
+        <AnalyticsClicks />
         {children}
       </body>
     </html>

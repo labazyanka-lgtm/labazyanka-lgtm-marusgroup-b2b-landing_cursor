@@ -1,6 +1,16 @@
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { siteConfig } from "@/lib/site-config";
 
 export function Contacts() {
+  const { contacts, legal, region } = siteConfig;
+
+  const legalRows: Array<[string, string]> = [
+    ["Юридическое лицо", legal.legalName],
+    ["ИНН", legal.inn],
+    ["ОГРН", legal.ogrn],
+    ["КПП", legal.kpp],
+  ];
+
   return (
     <section id="contacts" className="section bg-white">
       <div className="container">
@@ -30,10 +40,11 @@ export function Contacts() {
                     Телефон
                   </p>
                   <a
-                    href="tel:+79175162404"
+                    href={contacts.phoneHref}
+                    data-analytics="contacts_phone"
                     className="mt-1 block text-base font-semibold text-ink hover:text-accent"
                   >
-                    +7 (917) 516-24-04
+                    {contacts.phone}
                   </a>
                 </div>
               </li>
@@ -46,10 +57,11 @@ export function Contacts() {
                     Email
                   </p>
                   <a
-                    href="mailto:info@marusgroup.ru"
+                    href={contacts.emailHref}
+                    data-analytics="contacts_email"
                     className="mt-1 block text-base font-semibold text-ink hover:text-accent"
                   >
-                    info@marusgroup.ru
+                    {contacts.email}
                   </a>
                 </div>
               </li>
@@ -62,7 +74,7 @@ export function Contacts() {
                     Адрес
                   </p>
                   <p className="mt-1 text-base text-ink-muted">
-                    Москва и Московский регион · уточняется
+                    {region} · {contacts.address}
                   </p>
                 </div>
               </li>
@@ -74,16 +86,26 @@ export function Contacts() {
                   <p className="text-xs font-semibold uppercase tracking-[0.14em] text-ink-soft">
                     Режим работы
                   </p>
-                  <p className="mt-1 text-base text-ink-muted">уточняется</p>
+                  <p className="mt-1 text-base text-ink-muted">
+                    {contacts.workingHours}
+                  </p>
                 </div>
               </li>
             </ul>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <a href="#estimate" className="btn-primary">
+              <a
+                href="#estimate"
+                data-analytics="contacts_cta_estimate"
+                className="btn-primary"
+              >
                 Связаться по объекту
               </a>
-              <a href="tel:+79175162404" className="btn-secondary">
+              <a
+                href={contacts.phoneHref}
+                data-analytics="contacts_cta_call"
+                className="btn-secondary"
+              >
                 Позвонить
               </a>
             </div>
@@ -94,12 +116,7 @@ export function Contacts() {
               Юридические данные
             </h3>
             <dl className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-sm">
-              {[
-                ["Юридическое лицо", "уточняется"],
-                ["ИНН", "уточняется"],
-                ["ОГРН", "уточняется"],
-                ["КПП", "уточняется"],
-              ].map(([k, v]) => (
+              {legalRows.map(([k, v]) => (
                 <div key={k}>
                   <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-ink-soft">
                     {k}

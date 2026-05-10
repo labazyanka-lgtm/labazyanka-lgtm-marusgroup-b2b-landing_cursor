@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Menu, X, Phone } from "lucide-react";
 import { Logo } from "./Logo";
+import { siteConfig } from "@/lib/site-config";
 
 const NAV = [
   { href: "#for-whom", label: "Для кого" },
@@ -14,6 +15,7 @@ const NAV = [
 export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { contacts } = siteConfig;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -52,13 +54,18 @@ export function Header() {
 
         <div className="hidden md:flex items-center gap-2">
           <a
-            href="tel:+79175162404"
+            href={contacts.phoneHref}
+            data-analytics="header_phone"
             className="inline-flex items-center gap-2 text-sm font-medium text-ink hover:text-accent"
           >
             <Phone className="h-4 w-4 text-accent" aria-hidden="true" />
-            +7 (917) 516-24-04
+            {contacts.phone}
           </a>
-          <a href="#estimate" className="btn-primary">
+          <a
+            href="#estimate"
+            data-analytics="header_cta_estimate"
+            className="btn-primary"
+          >
             Запросить оценку
           </a>
         </div>
@@ -96,15 +103,17 @@ export function Header() {
             </ul>
             <div className="mt-3 flex flex-col gap-2">
               <a
-                href="tel:+79175162404"
+                href={contacts.phoneHref}
+                data-analytics="header_mobile_phone"
                 className="btn-secondary w-full"
                 onClick={() => setOpen(false)}
               >
                 <Phone className="h-4 w-4 text-accent" aria-hidden="true" />
-                +7 (917) 516-24-04
+                {contacts.phone}
               </a>
               <a
                 href="#estimate"
+                data-analytics="header_mobile_cta_estimate"
                 className="btn-primary w-full"
                 onClick={() => setOpen(false)}
               >
