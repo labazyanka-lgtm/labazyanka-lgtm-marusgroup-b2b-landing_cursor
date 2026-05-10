@@ -1,176 +1,148 @@
+import Image from "next/image";
+import { Logo } from "./Logo";
+
 const STATS = [
-  { v: "с 2008", k: "на рынке" },
-  { v: "50+", k: "объектов ведущих застройщиков Москвы" },
-  { v: "1500+ м²", k: "отшлифованного и отполированного стекла" },
+  { value: "с 2008", label: "на рынке" },
+  { value: "50+", label: "объектов ведущих застройщиков Москвы" },
+  { value: "1500+ м²", label: "отшлифованного и отполированного стекла" },
 ];
 
 const PROJECTS = [
   {
     name: "ЖК Eleven",
+    image: "/projects/eleven.jpg",
     client: "АО «Хлебозавод»",
     period: "с 02.2023",
     scope: "2 корпуса",
     works: [
       "реставрация СПК внутри корпусов и снаружи по фасаду",
       "шлифовка и полировка внутреннего СПК",
-      "проектирование, испытание и монтаж анкерных точек для сезонной мойки (доп. контракт)",
+      "монтаж анкерных точек для сезонной мойки",
     ],
   },
   {
     name: "ЖК City Bay",
+    image: "/projects/city-bay.jpg",
     client: "ООО «СУ-10»",
     period: "с 08.2023",
     scope: "6 корпусов",
     works: [
-      "реставрация СПК внутри корпусов и снаружи по фасаду с люлек и альпинистами",
+      "реставрация СПК внутри корпусов и снаружи по фасаду",
+      "работа с люлек и промышленными альпинистами",
       "мойка стекла перед проверкой",
-      "работы по контракту продолжаются",
-    ],
-  },
-  {
-    name: "Level Причальный",
-    client: "АО СЗ «ИНСПАЙР»",
-    period: "с 11.2023",
-    scope: "4 корпуса",
-    works: [
-      "реставрация СПК внутри корпусов и снаружи по фасаду альпинистами",
-      "реставрация алюминиевых профилей ОБ",
-      "гидроизоляция ОБ",
-      "оклейка атермальной тонировочной плёнкой",
-      "покрытие керамическим составом",
-    ],
-  },
-  {
-    name: "Level Нагатинская",
-    client: "ООО «СЗ Инвестиционное развитие»",
-    period: "с 03.2024",
-    scope: "4 корпуса",
-    works: [
-      "мойка после завершения строительных работ альпинистами и внутри корпусов",
-      "реставрация алюминиевых профилей ОБ",
-      "реставрация СПК внутри корпусов и снаружи альпинистами",
-      "оклейка полиуретановой плёнкой",
-      "покрытие гидрофобным составом",
-    ],
-  },
-  {
-    name: "ЖК Событие-2",
-    client: "ООО «Донстрой»",
-    period: "с 05.2024",
-    scope: "2 корпуса",
-    works: [
-      "реставрация фасадного остекления альпинистами",
-      "мойка стекла перед проверкой",
-      "оклейка атермальной тонировочной плёнкой",
-      "покрытие гидрофобным составом",
     ],
   },
   {
     name: "ЖК SOHO-NOHO",
+    image: "/projects/soho-noho.jpg",
     client: "ООО «Уэйнбридж девелопмент»",
     period: "с 06.2024",
     scope: "стилобат",
     works: [
       "реставрация фасадного витринного остекления",
       "мойка стекла перед проверкой",
-      "оклейка полиуретановой плёнкой",
       "покрытие керамическим составом",
-    ],
-  },
-  {
-    name: "Level Стрешнево",
-    client: "ООО «Левел Груп»",
-    period: "с 08.2024",
-    scope: "1 корпус",
-    works: [
-      "комплексный ремонт и регулировка балконных дверей",
-      "реставрация алюминиевого балконного блока",
-      "мойка СПК",
     ],
   },
 ];
 
 export function Experience() {
   return (
-    <section id="experience" className="section bg-surface-subtle">
+    <section id="experience" className="section bg-[#282827] text-white">
       <div className="container">
-        <div className="max-w-3xl">
-          <p className="eyebrow">Опыт</p>
-          <h2 className="mt-4 section-title text-balance">
-            Опыт работы на объектах с высокими требованиями к качеству
-          </h2>
-          <p className="section-subtitle">
-            Работаем с задачами, где важны аккуратность, сохранность готовых зон
-            и предсказуемая сдача результата.
-          </p>
-        </div>
+        <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
+          <div className="lg:col-span-7">
+            <p className="eyebrow !bg-white/10 !text-[#dabfa6] !ring-white/15">
+              Реализованные объекты
+            </p>
+            <h2 className="mt-4 font-display text-3xl font-normal uppercase leading-[1.05] tracking-tight text-[#dabfa6] sm:text-5xl">
+              Примеры выполненных работ MARUS GROUP
+            </h2>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-white/75 sm:text-lg">
+              Фирменная подача MARUS GROUP: логотип, шрифтовая пара Jost /
+              Montserrat, тёмный фон и реальные примеры объектов из портфолио
+              компании.
+            </p>
+          </div>
 
-        <div className="mt-10 card p-8 sm:p-10 bg-gradient-to-br from-accent-700 to-accent-900 text-white ring-0 shadow-cta">
-          <dl className="grid gap-8 sm:grid-cols-3">
-            {STATS.map((s) => (
-              <div key={s.k}>
-                <dt className="text-3xl sm:text-4xl font-semibold tracking-tight">
-                  {s.v}
-                </dt>
-                <dd className="mt-2 text-sm text-white/75 max-w-[18rem]">
-                  {s.k}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-
-        <div className="mt-12">
-          <h3 className="text-xl font-semibold tracking-tight text-ink">
-            Объекты, на которых работали и работаем
-          </h3>
-          <p className="mt-2 text-sm text-ink-muted max-w-2xl">
-            Без выдуманных результатов — только фактический объём, заказчик и
-            виды работ. Логотипы клиентов не используем без отдельного
-            разрешения.
-          </p>
-
-          <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {PROJECTS.map((p) => (
-              <li key={p.name} className="card p-6 flex flex-col">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <h4 className="text-lg font-semibold tracking-tight text-ink">
-                      {p.name}
-                    </h4>
-                    <p className="mt-1 text-sm text-ink-muted">{p.client}</p>
+          <div className="lg:col-span-5 lg:justify-self-end">
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-cta">
+              <Logo variant="light" className="w-[220px]" />
+              <dl className="mt-8 grid grid-cols-3 gap-5">
+                {STATS.map((item) => (
+                  <div key={item.label}>
+                    <dt className="font-display text-2xl font-normal text-[#dabfa6] sm:text-3xl">
+                      {item.value}
+                    </dt>
+                    <dd className="mt-2 text-xs leading-5 text-white/65">
+                      {item.label}
+                    </dd>
                   </div>
-                  <span className="pill shrink-0">{p.period}</span>
+                ))}
+              </dl>
+            </div>
+          </div>
+        </div>
+
+        <ul className="mt-12 grid gap-6 lg:grid-cols-3">
+          {PROJECTS.map((project) => (
+            <li
+              key={project.name}
+              className="overflow-hidden rounded-[1.75rem] border border-white/10 bg-white text-ink shadow-card"
+            >
+              <div className="relative h-56">
+                <Image
+                  src={project.image}
+                  alt={`Фото объекта ${project.name}`}
+                  fill
+                  sizes="(min-width: 1024px) 33vw, 100vw"
+                  className="object-cover"
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-5">
+                  <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-[#282827]">
+                    {project.period}
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-6">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h3 className="font-display text-2xl font-normal uppercase leading-tight text-[#c89f79]">
+                      {project.name}
+                    </h3>
+                    <p className="mt-2 text-sm text-ink-muted">
+                      {project.client}
+                    </p>
+                  </div>
+                  <span className="rounded-full bg-[#f7efe7] px-3 py-1 text-xs font-semibold text-[#8f6741]">
+                    {project.scope}
+                  </span>
                 </div>
 
-                <p className="mt-4 text-xs font-semibold uppercase tracking-[0.14em] text-ink-soft">
-                  Объём
-                </p>
-                <p className="mt-1 text-sm font-medium text-ink">{p.scope}</p>
-
-                <p className="mt-4 text-xs font-semibold uppercase tracking-[0.14em] text-ink-soft">
-                  Виды работ
-                </p>
-                <ul className="mt-2 space-y-1.5 text-sm text-ink-muted">
-                  {p.works.map((w) => (
-                    <li key={w} className="flex items-start gap-2.5">
+                <ul className="mt-5 space-y-2 text-sm text-ink-muted">
+                  {project.works.map((work) => (
+                    <li key={work} className="flex gap-2.5">
                       <span
                         aria-hidden="true"
-                        className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
+                        className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#c89f79]"
                       />
-                      <span>{w}</span>
+                      <span>{work}</span>
                     </li>
                   ))}
                 </ul>
-              </li>
-            ))}
-          </ul>
-        </div>
+              </div>
+            </li>
+          ))}
+        </ul>
 
-        <div className="mt-12">
-          <a href="#estimate" className="btn-secondary">
+        <div className="mt-10 flex flex-wrap items-center gap-4">
+          <a href="#estimate" className="btn-on-dark">
             Показать похожую задачу на вашем объекте
           </a>
+          <p className="text-sm text-white/60">
+            Данные по объектам — из публичного портфолио MARUS GROUP.
+          </p>
         </div>
       </div>
     </section>

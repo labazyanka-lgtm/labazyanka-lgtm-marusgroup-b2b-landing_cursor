@@ -22,7 +22,7 @@
   }
 
   h1, h2, h3, h4 {
-    @apply text-ink tracking-tight;
+    @apply font-display text-ink tracking-tight;
   }
 }
 
@@ -56,7 +56,7 @@
   }
 
   .section-title {
-    @apply text-3xl sm:text-4xl lg:text-[2.75rem] font-semibold leading-[1.1] tracking-tight text-ink;
+    @apply font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-semibold leading-[1.1] tracking-tight text-ink;
   }
 
   .section-subtitle {

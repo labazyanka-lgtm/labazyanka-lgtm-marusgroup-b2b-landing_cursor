@@ -52,8 +52,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: [
-          "Inter",
-          "Manrope",
+          "var(--font-montserrat)",
           "ui-sans-serif",
           "system-ui",
           "-apple-system",
@@ -61,6 +60,13 @@ const config: Config = {
           "Roboto",
           "Helvetica",
           "Arial",
+          "sans-serif",
+        ],
+        display: [
+          "var(--font-jost)",
+          "var(--font-montserrat)",
+          "ui-sans-serif",
+          "system-ui",
           "sans-serif",
         ],
       },
