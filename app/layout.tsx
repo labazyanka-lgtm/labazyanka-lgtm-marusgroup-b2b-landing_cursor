@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { AnalyticsScripts } from "@/components/AnalyticsScripts";
 import "./globals.css";
 
@@ -72,6 +73,7 @@ export default function RootLayout({
           Перейти к основному контенту
         </a>
         {children}
+        <SpeedInsights />
         <AnalyticsScripts />
       </body>
     </html>
