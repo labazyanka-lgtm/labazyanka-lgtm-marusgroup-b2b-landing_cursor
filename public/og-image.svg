@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="MARUS GROUP  2>AAB0=>2;5=85 AB5:;0 8 0;N<8=852>3> ?@>D8;O 4;O 70AB@>9I8:>2">
+  <!-- TODO[real-data]: ?@8 65;0=88 70<5=8BL =0 D>B>-10==5@ A @50;L=>3> >1J5:B0 (?>A;5 A>3;0A>20=8O A 70AB@>9I8:><). -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1F4E5F"/>
+      <stop offset="100%" stop-color="#0E2B36"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#DDEFF3" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#DDEFF3" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#accent)"/>
+  <g fill="none" stroke="#DDEFF3" stroke-opacity="0.08" stroke-width="1">
+    <path d="M0 120 H1200"/>
+    <path d="M0 250 H1200"/>
+    <path d="M0 380 H1200"/>
+    <path d="M0 510 H1200"/>
+  </g>
+  <g transform="translate(80,90)">
+    <rect width="64" height="64" rx="12" fill="#DDEFF3"/>
+    <text x="32" y="44" text-anchor="middle"
+          font-family="Inter, ui-sans-serif, system-ui, sans-serif"
+          font-weight="700" font-size="22" fill="#1F4E5F" letter-spacing="1">MG</text>
+    <text x="84" y="44"
+          font-family="Inter, ui-sans-serif, system-ui, sans-serif"
+          font-weight="700" font-size="28" fill="#FFFFFF" letter-spacing="4">MARUS GROUP</text>
+  </g>
+  <text x="80" y="280"
+        font-family="Inter, ui-sans-serif, system-ui, sans-serif"
+        font-weight="700" font-size="64" fill="#FFFFFF">
+    <tspan x="80" dy="0">>2>48< AB5:;> 8 0;N<8=852K9</tspan>
+    <tspan x="80" dy="78">?@>D8;L 4> A>AB>O=8O ?@8Q<:8</tspan>
+  </text>
+  <text x="80" y="500"
+        font-family="Inter, ui-sans-serif, system-ui, sans-serif"
+        font-weight="500" font-size="28" fill="#DDEFF3" fill-opacity="0.85">
+    B2B-?>4@O4G8: 4;O 70AB@>9I8:>2 68;LO 187=5A-:;0AA0 · >A:20 8  · A 2008
+  </text>
+</svg>
