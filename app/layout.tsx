@@ -1,14 +1,16 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { Analytics } from "@/components/Analytics";
+import { AnalyticsClicks } from "@/components/AnalyticsClicks";
+import { siteConfig } from "@/lib/site-config";
 
-const SITE_URL = "https://marusgroup.ru";
 const TITLE =
   "MARUS GROUP — восстановление стекла и алюминиевого профиля для застройщиков";
 const DESCRIPTION =
   "Закрываем замечания по стеклу, фасадному остеклению и алюминиевому профилю на объектах застройщиков перед приёмкой, сдачей и передачей готовых помещений.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL(siteConfig.url),
   title: {
     default: TITLE,
     template: "%s — MARUS GROUP",
@@ -28,18 +30,30 @@ export const metadata: Metadata = {
     "устранение замечаний по стеклу перед сдачей объекта",
   ],
   authors: [{ name: "MARUS GROUP" }],
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     type: "website",
-    url: SITE_URL,
+    url: siteConfig.url,
     siteName: "MARUS GROUP",
     title: TITLE,
     description: DESCRIPTION,
     locale: "ru_RU",
+    images: [
+      {
+        url: "/og-image.svg",
+        width: 1200,
+        height: 630,
+        alt: "MARUS GROUP — восстановление стекла и алюминиевого профиля",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: TITLE,
     description: DESCRIPTION,
+    images: ["/og-image.svg"],
   },
   robots: {
     index: true,
@@ -71,6 +85,8 @@ export default function RootLayout({
           Перейти к основному контенту
         </a>
         {children}
+        <Analytics />
+        <AnalyticsClicks />
       </body>
     </html>
   );
