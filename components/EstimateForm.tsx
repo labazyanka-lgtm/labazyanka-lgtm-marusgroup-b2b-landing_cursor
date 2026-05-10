@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import {
   ArrowRight,
   AlertCircle,
@@ -41,6 +41,16 @@ export function EstimateForm() {
   const [submitted, setSubmitted] = useState(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const successRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (submitted && successRef.current) {
+      // Шапка sticky, поэтому подскролливаем к успеху, чтобы он не уехал
+      // под футер из-за того, что замена длинной формы коротким блоком
+      // успеха резко сжимает страницу.
+      successRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [submitted]);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -160,7 +170,11 @@ export function EstimateForm() {
 
             <div className="lg:col-span-7 p-8 sm:p-10">
               {submitted ? (
-                <div className="flex h-full flex-col items-start justify-center">
+                <div
+                  ref={successRef}
+                  tabIndex={-1}
+                  className="flex h-full min-h-[420px] flex-col items-start justify-center scroll-mt-24"
+                >
                   <span className="grid h-12 w-12 place-items-center rounded-full bg-glass text-accent-700 ring-1 ring-inset ring-accent-200/70">
                     <CheckCircle2 className="h-6 w-6" />
                   </span>
