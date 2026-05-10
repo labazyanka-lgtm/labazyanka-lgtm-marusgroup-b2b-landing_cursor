@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { AnalyticsScripts } from "@/components/AnalyticsScripts";
 import "./globals.css";
 
 const SITE_URL = "https://marusgroup.ru";
@@ -71,6 +72,7 @@ export default function RootLayout({
           Перейти к основному контенту
         </a>
         {children}
+        <AnalyticsScripts />
       </body>
     </html>
   );

@@ -57,9 +57,14 @@ npm run start
 
 - Юридические данные (Юр. лицо / ИНН / ОГРН / КПП) — сейчас «уточняется».
 - Адрес и режим работы — «уточняется».
-- Подключить реальный backend для отправки формы (сейчас имитация
-  `setTimeout` в `EstimateForm.tsx`). Поля уже соответствуют B2B-брифу.
-- Подключить аналитику (Я.Метрика / GA / Plausible) и события на CTA / форме.
+- **Форма заявки:** эндпоинт `POST /api/estimate` (см. `app/api/estimate/route.ts`).
+  Задайте в `.env` переменные из `.env.example`: почта через **Resend**
+  (`RESEND_API_KEY`, `ESTIMATE_EMAIL_FROM`, `ESTIMATE_EMAIL_TO`) и/или копия
+  заявки JSON на **`ESTIMATE_WEBHOOK_URL`** (CRM, Zapier и т.д.).
+- **Аналитика:** `NEXT_PUBLIC_YANDEX_METRIKA_ID` и/или
+  `NEXT_PUBLIC_GA_MEASUREMENT_ID`. Цели в Метрике: `estimate_submit`,
+  `header_estimate`, `mobile_cta_phone`, `mobile_cta_photo`, `mobile_cta_visit`
+  (создайте их в интерфейсе Метрики).
 - Реальные фото объектов — добавить в карточки `Experience.tsx`,
   если будет согласие застройщиков.
 - Логотипы клиентов — не используем, пока нет файлов и письменного разрешения.

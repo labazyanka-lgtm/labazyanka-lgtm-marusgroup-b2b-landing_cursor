@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Menu, X, Phone } from "lucide-react";
 import { Logo } from "./Logo";
+import { trackCtaClick } from "@/lib/analytics";
 
 const NAV = [
   { href: "#for-whom", label: "Для кого" },
@@ -58,7 +59,11 @@ export function Header() {
             <Phone className="h-4 w-4 text-accent" aria-hidden="true" />
             +7 (917) 516-24-04
           </a>
-          <a href="#estimate" className="btn-primary">
+          <a
+            href="#estimate"
+            className="btn-primary"
+            onClick={() => trackCtaClick("header_estimate")}
+          >
             Запросить оценку
           </a>
         </div>
@@ -106,7 +111,10 @@ export function Header() {
               <a
                 href="#estimate"
                 className="btn-primary w-full"
-                onClick={() => setOpen(false)}
+                onClick={() => {
+                  trackCtaClick("header_estimate");
+                  setOpen(false);
+                }}
               >
                 Запросить оценку
               </a>
