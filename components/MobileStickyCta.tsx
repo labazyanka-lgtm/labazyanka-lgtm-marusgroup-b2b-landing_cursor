@@ -1,4 +1,7 @@
+"use client";
+
 import { Phone, Camera, CalendarDays } from "lucide-react";
+import { trackCtaClick } from "@/lib/analytics";
 
 export function MobileStickyCta() {
   return (
@@ -10,6 +13,7 @@ export function MobileStickyCta() {
         <a
           href="tel:+79175162404"
           className="flex flex-col items-center justify-center gap-1 py-3 text-[11px] font-medium text-ink hover:bg-surface-subtle"
+          onClick={() => trackCtaClick("mobile_cta_phone")}
         >
           <Phone className="h-5 w-5 text-accent" aria-hidden="true" />
           Позвонить
@@ -17,6 +21,7 @@ export function MobileStickyCta() {
         <a
           href="#estimate"
           className="flex flex-col items-center justify-center gap-1 py-3 text-[11px] font-medium text-ink hover:bg-surface-subtle"
+          onClick={() => trackCtaClick("mobile_cta_photo")}
         >
           <Camera className="h-5 w-5 text-accent" aria-hidden="true" />
           Оценить по фото
@@ -24,6 +29,7 @@ export function MobileStickyCta() {
         <a
           href="#estimate"
           className="flex flex-col items-center justify-center gap-1 py-3 text-[11px] font-medium text-ink hover:bg-surface-subtle"
+          onClick={() => trackCtaClick("mobile_cta_visit")}
         >
           <CalendarDays className="h-5 w-5 text-accent" aria-hidden="true" />
           Назначить выезд

@@ -8,6 +8,7 @@ import {
   CalendarDays,
   FileText,
 } from "lucide-react";
+import { trackEstimateSubmit } from "@/lib/analytics";
 
 const STAGES = [
   "Передача помещений",
@@ -37,14 +38,47 @@ const CONTACT_PREFS = ["Телефон", "Email", "Telegram", "WhatsApp"];
 export function EstimateForm() {
   const [submitted, setSubmitted] = useState(false);
   const [pending, setPending] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  function onSubmit(e: FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setSubmitError(null);
     setPending(true);
-    setTimeout(() => {
-      setPending(false);
+    const form = e.currentTarget;
+    const body = new FormData(form);
+
+    try {
+      const res = await fetch("/api/estimate", {
+        method: "POST",
+        body,
+      });
+      const data: unknown = await res.json().catch(() => null);
+      const message =
+        data &&
+        typeof data === "object" &&
+        "error" in data &&
+        typeof (data as { error: unknown }).error === "string"
+          ? (data as { error: string }).error
+          : null;
+
+      if (!res.ok) {
+        setSubmitError(
+          message ??
+            "Не удалось отправить заявку. Попробуйте ещё раз или свяжитесь по телефону.",
+        );
+        return;
+      }
+
       setSubmitted(true);
-    }, 600);
+      trackEstimateSubmit();
+      form.reset();
+    } catch {
+      setSubmitError(
+        "Нет соединения с сервером. Проверьте интернет или позвоните нам.",
+      );
+    } finally {
+      setPending(false);
+    }
   }
 
   return (
@@ -132,6 +166,16 @@ export function EstimateForm() {
                   onSubmit={onSubmit}
                   noValidate
                 >
+                  <div className="sr-only" aria-hidden="true">
+                    <label htmlFor="website-hp">Не заполнять</label>
+                    <input
+                      id="website-hp"
+                      type="text"
+                      name="website"
+                      tabIndex={-1}
+                      autoComplete="off"
+                    />
+                  </div>
                   <div>
                     <label htmlFor="name" className="label">
                       Имя
@@ -354,6 +398,17 @@ export function EstimateForm() {
                       placeholder="Сроки, ограничения по доступу, особенности объекта…"
                     />
                   </div>
+
+                  {submitError ? (
+                    <div className="sm:col-span-2">
+                      <p
+                        className="rounded-xl bg-red-50 px-3.5 py-2.5 text-sm text-red-900 ring-1 ring-inset ring-red-200"
+                        role="alert"
+                      >
+                        {submitError}
+                      </p>
+                    </div>
+                  ) : null}
 
                   <div className="sm:col-span-2 flex flex-wrap items-center justify-between gap-4 pt-1">
                     <p className="text-xs text-ink-soft max-w-md">
