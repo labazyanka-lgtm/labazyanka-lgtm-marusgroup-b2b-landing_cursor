@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Menu, X, Phone } from "lucide-react";
 import { Logo } from "./Logo";
+import { contacts } from "@/lib/site-config";
 
 const NAV = [
   { href: "#for-whom", label: "Для кого" },
@@ -52,13 +53,18 @@ export function Header() {
 
         <div className="hidden md:flex items-center gap-2">
           <a
-            href="tel:+79175162404"
+            href={`tel:${contacts.phoneTel}`}
+            data-analytics="header.phone"
             className="inline-flex items-center gap-2 text-sm font-medium text-ink hover:text-accent"
           >
             <Phone className="h-4 w-4 text-accent" aria-hidden="true" />
-            +7 (917) 516-24-04
+            {contacts.phoneDisplay}
           </a>
-          <a href="#estimate" className="btn-primary">
+          <a
+            href="#estimate"
+            data-analytics="header.cta_estimate"
+            className="btn-primary"
+          >
             Запросить оценку
           </a>
         </div>
@@ -96,15 +102,17 @@ export function Header() {
             </ul>
             <div className="mt-3 flex flex-col gap-2">
               <a
-                href="tel:+79175162404"
+                href={`tel:${contacts.phoneTel}`}
+                data-analytics="header_mobile.phone"
                 className="btn-secondary w-full"
                 onClick={() => setOpen(false)}
               >
                 <Phone className="h-4 w-4 text-accent" aria-hidden="true" />
-                +7 (917) 516-24-04
+                {contacts.phoneDisplay}
               </a>
               <a
                 href="#estimate"
+                data-analytics="header_mobile.cta_estimate"
                 className="btn-primary w-full"
                 onClick={() => setOpen(false)}
               >

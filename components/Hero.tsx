@@ -7,6 +7,7 @@ import {
   Camera,
   CalendarDays,
 } from "lucide-react";
+import { siteConfig } from "@/lib/site-config";
 
 const MARKERS = [
   { icon: ShieldCheck, label: "Защита готовой отделки" },
@@ -54,15 +55,27 @@ export function Hero() {
             </ul>
 
             <div className="mt-9 flex flex-wrap items-center gap-3">
-              <a href="#estimate" className="btn-primary">
+              <a
+                href="#estimate"
+                data-analytics="hero.cta_estimate"
+                className="btn-primary"
+              >
                 Запросить оценку по объекту
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </a>
-              <a href="#estimate" className="btn-secondary">
+              <a
+                href="#estimate"
+                data-analytics="hero.cta_photo"
+                className="btn-secondary"
+              >
                 <Camera className="h-4 w-4 text-accent" aria-hidden="true" />
                 Отправить фото дефектов
               </a>
-              <a href="#estimate" className="btn-ghost">
+              <a
+                href="#estimate"
+                data-analytics="hero.cta_visit"
+                className="btn-ghost"
+              >
                 <CalendarDays className="h-4 w-4 text-accent" aria-hidden="true" />
                 Назначить выезд
               </a>
@@ -153,7 +166,7 @@ function ObjectCard() {
           </ul>
 
           <div className="mt-6 flex items-center justify-between border-t border-line pt-4 text-xs text-ink-soft">
-            <span>На рынке с 2008 года</span>
+            <span>На рынке с {siteConfig.sinceYear} года</span>
             <span>Москва и МО</span>
           </div>
         </div>

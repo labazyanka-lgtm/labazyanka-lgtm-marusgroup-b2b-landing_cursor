@@ -1,4 +1,5 @@
 import { Logo } from "./Logo";
+import { contacts, legal, PLACEHOLDER, siteConfig } from "@/lib/site-config";
 
 const COL_NAV = [
   { href: "#for-whom", label: "Для кого работаем" },
@@ -10,6 +11,12 @@ const COL_NAV = [
 
 export function Footer() {
   const year = new Date().getFullYear();
+  const legalRows: ReadonlyArray<readonly [string, string]> = [
+    ["Юр. лицо", legal.legalName],
+    ["ИНН", legal.inn],
+    ["ОГРН", legal.ogrn],
+  ];
+
   return (
     <footer className="border-t border-line bg-white">
       <div className="container py-14">
@@ -19,23 +26,33 @@ export function Footer() {
             <p className="mt-4 max-w-md text-sm text-ink-muted">
               B2B-подрядчик для застройщиков. Закрываем замечания по стеклу,
               фасадному остеклению и алюминиевому профилю на объектах перед
-              приёмкой и передачей готовых помещений. На рынке с 2008 года,
-              Москва и Московский регион.
+              приёмкой и передачей готовых помещений. На рынке с{" "}
+              {siteConfig.sinceYear} года, {siteConfig.region}.
             </p>
             <p className="mt-6 text-sm">
               <a
-                href="tel:+79175162404"
+                href={`tel:${contacts.phoneTel}`}
+                data-analytics="footer.phone"
                 className="font-semibold text-ink hover:text-accent"
               >
-                +7 (917) 516-24-04
+                {contacts.phoneDisplay}
               </a>
             </p>
             <p className="text-sm">
               <a
-                href="mailto:info@marusgroup.ru"
+                href={`mailto:${contacts.email}`}
+                data-analytics="footer.email"
                 className="font-semibold text-ink hover:text-accent"
               >
-                info@marusgroup.ru
+                {contacts.email}
+              </a>
+            </p>
+            <p className="mt-6 text-xs text-ink-soft">
+              <a
+                href="/privacy"
+                className="hover:text-ink underline-offset-4 hover:underline"
+              >
+                Политика обработки персональных данных
               </a>
             </p>
           </div>
@@ -63,14 +80,12 @@ export function Footer() {
               Реквизиты
             </p>
             <dl className="mt-4 space-y-2 text-sm">
-              {[
-                ["Юр. лицо", "уточняется"],
-                ["ИНН", "уточняется"],
-                ["ОГРН", "уточняется"],
-              ].map(([k, v]) => (
+              {legalRows.map(([k, v]) => (
                 <div key={k} className="flex justify-between gap-3">
                   <dt className="text-ink-soft">{k}</dt>
-                  <dd className="text-ink-muted">{v}</dd>
+                  <dd className="text-ink-muted">
+                    {v === PLACEHOLDER ? "уточняется" : v}
+                  </dd>
                 </div>
               ))}
             </dl>
@@ -79,10 +94,10 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col-reverse items-start justify-between gap-4 border-t border-line pt-6 sm:flex-row sm:items-center">
           <p className="text-xs text-ink-soft">
-            © {year} MARUS GROUP. Все права защищены.
+            © {year} {siteConfig.name}. Все права защищены.
           </p>
           <p className="text-xs text-ink-soft">
-            Москва и Московский регион · работаем с 2008 года
+            {siteConfig.region} · работаем с {siteConfig.sinceYear} года
           </p>
         </div>
       </div>
