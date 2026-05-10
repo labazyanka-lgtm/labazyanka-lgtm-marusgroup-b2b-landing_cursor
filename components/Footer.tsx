@@ -1,4 +1,5 @@
 import { Logo } from "./Logo";
+import { sitePublic } from "@/lib/sitePublic";
 
 const COL_NAV = [
   { href: "#for-whom", label: "Для кого работаем" },
@@ -64,9 +65,10 @@ export function Footer() {
             </p>
             <dl className="mt-4 space-y-2 text-sm">
               {[
-                ["Юр. лицо", "уточняется"],
-                ["ИНН", "уточняется"],
-                ["ОГРН", "уточняется"],
+                ["Юр. лицо", sitePublic.legalEntity],
+                ["ИНН", sitePublic.inn],
+                ["ОГРН", sitePublic.ogrn],
+                ["КПП", sitePublic.kpp],
               ].map(([k, v]) => (
                 <div key={k} className="flex justify-between gap-3">
                   <dt className="text-ink-soft">{k}</dt>

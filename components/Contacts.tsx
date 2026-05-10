@@ -1,4 +1,5 @@
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { sitePublic } from "@/lib/sitePublic";
 
 export function Contacts() {
   return (
@@ -62,7 +63,7 @@ export function Contacts() {
                     Адрес
                   </p>
                   <p className="mt-1 text-base text-ink-muted">
-                    Москва и Московский регион · уточняется
+                    {sitePublic.officeAddress}
                   </p>
                 </div>
               </li>
@@ -74,7 +75,9 @@ export function Contacts() {
                   <p className="text-xs font-semibold uppercase tracking-[0.14em] text-ink-soft">
                     Режим работы
                   </p>
-                  <p className="mt-1 text-base text-ink-muted">уточняется</p>
+                  <p className="mt-1 text-base text-ink-muted">
+                    {sitePublic.officeHours}
+                  </p>
                 </div>
               </li>
             </ul>
@@ -95,10 +98,10 @@ export function Contacts() {
             </h3>
             <dl className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-sm">
               {[
-                ["Юридическое лицо", "уточняется"],
-                ["ИНН", "уточняется"],
-                ["ОГРН", "уточняется"],
-                ["КПП", "уточняется"],
+                ["Юридическое лицо", sitePublic.legalEntity],
+                ["ИНН", sitePublic.inn],
+                ["ОГРН", sitePublic.ogrn],
+                ["КПП", sitePublic.kpp],
               ].map(([k, v]) => (
                 <div key={k}>
                   <dt className="text-xs font-semibold uppercase tracking-[0.14em] text-ink-soft">
