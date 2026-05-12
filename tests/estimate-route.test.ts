@@ -59,6 +59,18 @@ describe("POST /api/estimate", () => {
     expect(res.status).toBe(503);
   });
 
+  it("uses webhook when Resend key is set but ESTIMATE_EMAIL_FROM is missing", async () => {
+    process.env.RESEND_API_KEY = "re_test";
+    process.env.ESTIMATE_WEBHOOK_URL = "https://example.com/hook";
+    const fetchMock = vi.fn().mockResolvedValue(new Response("", { status: 200 }));
+    vi.stubGlobal("fetch", fetchMock);
+
+    const res = await POST(formPost(validMinimalForm()));
+    expect(res.status).toBe(200);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock.mock.calls[0][0]).toBe("https://example.com/hook");
+  });
+
   it("returns 400 when required fields are missing", async () => {
     process.env.ESTIMATE_WEBHOOK_URL = "https://example.com/hook";
     const fd = new FormData();
@@ -145,6 +157,39 @@ describe("POST /api/estimate", () => {
 
     const res = await POST(formPost(validMinimalForm()));
     expect(res.status).toBe(200);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("returns 200 when Resend fails but webhook succeeded", async () => {
+    process.env.RESEND_API_KEY = "re_test";
+    process.env.ESTIMATE_EMAIL_FROM = "from@example.com";
+    process.env.ESTIMATE_WEBHOOK_URL = "https://example.com/hook";
+
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(new Response("resend down", { status: 500 }))
+      .mockResolvedValueOnce(new Response("", { status: 200 }));
+    vi.stubGlobal("fetch", fetchMock);
+
+    const res = await POST(formPost(validMinimalForm()));
+    expect(res.status).toBe(200);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(fetchMock.mock.calls[1][0]).toBe("https://example.com/hook");
+  });
+
+  it("returns 502 when all configured delivery channels fail", async () => {
+    process.env.RESEND_API_KEY = "re_test";
+    process.env.ESTIMATE_EMAIL_FROM = "from@example.com";
+    process.env.ESTIMATE_WEBHOOK_URL = "https://example.com/hook";
+
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(new Response("resend down", { status: 500 }))
+      .mockResolvedValueOnce(new Response("webhook down", { status: 500 }));
+    vi.stubGlobal("fetch", fetchMock);
+
+    const res = await POST(formPost(validMinimalForm()));
+    expect(res.status).toBe(502);
     expect(fetchMock).toHaveBeenCalledTimes(2);
   });
 
