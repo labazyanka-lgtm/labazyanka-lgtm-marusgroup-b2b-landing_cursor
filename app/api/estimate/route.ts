@@ -113,7 +113,7 @@ export async function POST(request: Request) {
   }
 
   const resendKey = process.env.RESEND_API_KEY;
-  const emailFrom = process.env.ESTIMATE_EMAIL_FROM;
+  const emailFrom = process.env.ESTIMATE_EMAIL_FROM?.trim();
   const emailTo = process.env.ESTIMATE_EMAIL_TO ?? "info@marusgroup.ru";
   const webhookUrl = process.env.ESTIMATE_WEBHOOK_URL?.trim();
 
@@ -127,7 +127,7 @@ export async function POST(request: Request) {
     );
   }
 
-  if (resendKey && !emailFrom) {
+  if (resendKey && !emailFrom && !webhookUrl) {
     return NextResponse.json(
       { error: "Задайте ESTIMATE_EMAIL_FROM для отправки почты" },
       { status: 503 },
@@ -215,8 +215,10 @@ export async function POST(request: Request) {
   const textBody = buildEmailText(payload);
   const subject = `Заявка с сайта: ${payload.company} — ${payload.object}`;
 
-  try {
-    if (resendKey && emailFrom) {
+  let delivered = false;
+
+  if (resendKey && emailFrom) {
+    try {
       await sendResendEmail({
         apiKey: resendKey,
         from: emailFrom,
@@ -225,29 +227,32 @@ export async function POST(request: Request) {
         text: textBody,
         attachments,
       });
+      delivered = true;
+    } catch (emailErr) {
+      console.error("[estimate] email failed:", emailErr);
     }
-
-    if (webhookUrl) {
-      try {
-        await postWebhook(webhookUrl, {
-          source: "marusgroup-b2b-landing",
-          submittedAt: new Date().toISOString(),
-          ...payload,
-        });
-      } catch (whErr) {
-        console.error("[estimate] webhook failed:", whErr);
-        if (!resendKey) {
-          throw whErr;
-        }
-      }
-    }
-
-    return NextResponse.json({ ok: true });
-  } catch (e) {
-    console.error("[estimate] send failed:", e);
-    return NextResponse.json(
-      { error: "Не удалось отправить заявку. Попробуйте позже или позвоните нам." },
-      { status: 502 },
-    );
   }
+
+  if (webhookUrl) {
+    try {
+      await postWebhook(webhookUrl, {
+        source: "marusgroup-b2b-landing",
+        submittedAt: new Date().toISOString(),
+        ...payload,
+      });
+      delivered = true;
+    } catch (whErr) {
+      console.error("[estimate] webhook failed:", whErr);
+    }
+  }
+
+  if (delivered) {
+    return NextResponse.json({ ok: true });
+  }
+
+  console.error("[estimate] all delivery channels failed");
+  return NextResponse.json(
+    { error: "Не удалось отправить заявку. Попробуйте позже или позвоните нам." },
+    { status: 502 },
+  );
 }
