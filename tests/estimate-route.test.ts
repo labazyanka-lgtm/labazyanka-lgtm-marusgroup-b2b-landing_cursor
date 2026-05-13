@@ -99,6 +99,35 @@ describe("POST /api/estimate", () => {
     expect(posted.source).toBe("marusgroup-b2b-landing");
   });
 
+  it("includes uploaded photo content in webhook payload", async () => {
+    process.env.ESTIMATE_WEBHOOK_URL = "https://example.com/hook";
+    const fetchMock = vi.fn().mockResolvedValue(new Response("", { status: 200 }));
+    vi.stubGlobal("fetch", fetchMock);
+
+    const fd = validMinimalForm();
+    fd.append(
+      "photos",
+      new File(["photo-bytes"], "defect.jpg", { type: "image/jpeg" }),
+    );
+
+    const res = await POST(formPost(fd));
+    expect(res.status).toBe(200);
+
+    const [, init] = fetchMock.mock.calls[0];
+    const posted = JSON.parse(String(init?.body));
+    expect(posted.photosMeta).toEqual([
+      { name: "defect.jpg", size: 11, type: "image/jpeg" },
+    ]);
+    expect(posted.photos).toEqual([
+      {
+        name: "defect.jpg",
+        size: 11,
+        type: "image/jpeg",
+        contentBase64: Buffer.from("photo-bytes").toString("base64"),
+      },
+    ]);
+  });
+
   it("sends email via Resend when configured", async () => {
     process.env.RESEND_API_KEY = "re_test";
     process.env.ESTIMATE_EMAIL_FROM = "from@example.com";
