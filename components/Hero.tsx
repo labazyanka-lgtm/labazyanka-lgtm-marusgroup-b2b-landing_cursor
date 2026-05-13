@@ -9,10 +9,10 @@ import {
 } from "lucide-react";
 
 const MARKERS = [
-  { icon: ShieldCheck, label: "Защита готовой отделки" },
-  { icon: ClipboardList, label: "Работа по регламенту" },
-  { icon: CheckCircle2, label: "Фиксация результата" },
-  { icon: FileCheck2, label: "Закрывающие документы" },
+  { icon: ShieldCheck, label: "Отделку закрываем — работаем только в зоне дефекта" },
+  { icon: ClipboardList, label: "12 шагов: от заявки до акта, без «серых зон»" },
+  { icon: CheckCircle2, label: "Фото до/после и осмотр — результат можно защитить" },
+  { icon: FileCheck2, label: "Документы под договор и технадзор" },
 ];
 
 export function Hero() {
@@ -27,16 +27,18 @@ export function Hero() {
           <div className="lg:col-span-7">
             <p className="eyebrow">
               <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
-              B2B-подрядчик для застройщиков жилья бизнес-класса
+              Подрядчик по финальной стадии для застройщиков бизнес-класса
             </p>
             <h1 className="mt-5 text-balance text-[2rem] sm:text-5xl lg:text-[3.5rem] font-semibold leading-[1.05] tracking-tight">
               Доводим стекло и алюминиевый профиль на объектах бизнес-класса до{" "}
-              <span className="text-accent">состояния приёмки</span>
+              <span className="text-accent">чистой приёмки</span> — без новых
+              замечаний после наших работ
             </h1>
             <p className="mt-6 max-w-xl text-lg text-ink-muted text-pretty">
-              Закрываем замечания по стеклу, фасадному остеклению и алюминиевому
-              профилю перед сдачей объекта — аккуратно, с защитой отделки и без
-              повторных переделок.
+              Итог, который выгоден заказчику: замечания по стеклу и профилю
+              закрыты, готовые зоны не пострадали, сроки сдачи не размываются
+              из‑за переделок. Первичный разбор — по фото; ответ по заявке — до
+              1 рабочего дня.
             </p>
 
             <ul className="mt-8 grid grid-cols-2 gap-x-6 gap-y-3 max-w-lg">
@@ -55,16 +57,16 @@ export function Hero() {
 
             <div className="mt-9 flex flex-wrap items-center gap-3">
               <a href="#estimate" className="btn-primary">
-                Запросить оценку по объекту
+                Получить разбор и следующий шаг
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </a>
               <a href="#estimate" className="btn-secondary">
                 <Camera className="h-4 w-4 text-accent" aria-hidden="true" />
-                Отправить фото дефектов
+                Бесплатный первичный разбор по фото
               </a>
               <a href="#estimate" className="btn-ghost">
                 <CalendarDays className="h-4 w-4 text-accent" aria-hidden="true" />
-                Назначить выезд
+                Забронировать выезд на дефектовку
               </a>
             </div>
           </div>
@@ -94,7 +96,7 @@ function ObjectCard() {
             </span>
           </div>
           <span className="pill text-[11px] !text-accent-700 !ring-accent-200/70 !bg-glass">
-            Готов к приёмке
+            Зона готова к приёмке
           </span>
         </div>
 
@@ -134,10 +136,10 @@ function ObjectCard() {
 
           <ul className="mt-6 space-y-2.5">
             {[
-              "Защита готовой отделки",
-              "Регламент работ — 12 этапов",
-              "Контроль результата",
-              "Закрывающие документы",
+              "Защита отделки и смежных поверхностей",
+              "Регламент — 12 этапов до акта",
+              "Контроль: стекло, профиль, периметр",
+              "Акт и закрывающие по договору",
             ].map((row) => (
               <li
                 key={row}
