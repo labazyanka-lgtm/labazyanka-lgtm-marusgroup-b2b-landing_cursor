@@ -24,6 +24,13 @@ type EstimatePayload = {
   photosMeta: { name: string; size: number; type: string }[];
 };
 
+type EstimateAttachment = {
+  filename: string;
+  content: string;
+  type: string;
+  size: number;
+};
+
 function trimField(v: unknown, max: number): string {
   const s = String(v ?? "").trim();
   return s.length > max ? s.slice(0, max) : s;
@@ -64,7 +71,7 @@ async function sendResendEmail(opts: {
   to: string;
   subject: string;
   text: string;
-  attachments: { filename: string; content: string }[];
+  attachments: EstimateAttachment[];
 }): Promise<void> {
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -77,7 +84,14 @@ async function sendResendEmail(opts: {
       to: [opts.to],
       subject: opts.subject,
       text: opts.text,
-      ...(opts.attachments.length ? { attachments: opts.attachments } : {}),
+      ...(opts.attachments.length
+        ? {
+            attachments: opts.attachments.map(({ filename, content }) => ({
+              filename,
+              content,
+            })),
+          }
+        : {}),
     }),
   });
 
@@ -180,7 +194,7 @@ export async function POST(request: Request) {
   };
 
   const rawFiles = formData.getAll("photos");
-  const attachments: { filename: string; content: string }[] = [];
+  const attachments: EstimateAttachment[] = [];
   let totalBytes = 0;
 
   for (const entry of rawFiles) {
@@ -199,16 +213,20 @@ export async function POST(request: Request) {
       );
     }
 
+    const filename = entry.name || "photo.jpg";
+    const contentType = entry.type || "application/octet-stream";
     payload.photosMeta.push({
-      name: entry.name,
+      name: filename,
       size: entry.size,
-      type: entry.type || "application/octet-stream",
+      type: contentType,
     });
 
     const buf = Buffer.from(await entry.arrayBuffer());
     attachments.push({
-      filename: entry.name || "photo.jpg",
+      filename,
       content: buf.toString("base64"),
+      type: contentType,
+      size: entry.size,
     });
   }
 
@@ -233,6 +251,12 @@ export async function POST(request: Request) {
           source: "marusgroup-b2b-landing",
           submittedAt: new Date().toISOString(),
           ...payload,
+          photos: attachments.map((file) => ({
+            name: file.filename,
+            size: file.size,
+            type: file.type,
+            contentBase64: file.content,
+          })),
         });
       } catch (whErr) {
         console.error("[estimate] webhook failed:", whErr);
