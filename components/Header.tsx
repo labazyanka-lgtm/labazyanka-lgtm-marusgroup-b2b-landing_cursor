@@ -64,7 +64,7 @@ export function Header() {
             className="btn-primary"
             onClick={() => trackCtaClick("header_estimate")}
           >
-            Запросить оценку
+            Получить оценку
           </a>
         </div>
 
@@ -116,7 +116,7 @@ export function Header() {
                   setOpen(false);
                 }}
               >
-                Запросить оценку
+                Получить оценку
               </a>
             </div>
           </nav>
